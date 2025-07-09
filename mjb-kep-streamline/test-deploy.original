@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: env-demo-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: env-demo
+  template:
+    metadata:
+      labels:
+        app: env-demo
+    spec:
+      containers:
+      - name: demo-container
+        image: nginx
+        env:
+        - name: APP_MODE
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: APP_MODE
+        - name: APP_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: APP_PORT
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: DB_PASSWORD
