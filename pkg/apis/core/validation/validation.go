@@ -19,6 +19,7 @@ package validation
 import (
 	"encoding/json"
 	"fmt"
+	"k8s.io/klog/v2"
 	"math"
 	"net"
 	"path"
@@ -2882,6 +2883,7 @@ func validateConfigMapKeySelector(s *core.ConfigMapKeySelector, fldPath *field.P
 }
 
 func validateSecretKeySelector(s *core.SecretKeySelector, fldPath *field.Path) field.ErrorList {
+	klog.V(1).Infof("Info: Added by PSMJB. Entered validateSecretKeySelector function")
 	allErrs := field.ErrorList{}
 
 	nameFn := ValidateNameFunc(ValidateSecretName)
@@ -2889,7 +2891,8 @@ func validateSecretKeySelector(s *core.SecretKeySelector, fldPath *field.Path) f
 		allErrs = append(allErrs, field.Invalid(fldPath.Child("name"), s.Name, msg))
 	}
 	if len(s.Key) == 0 {
-		allErrs = append(allErrs, field.Required(fldPath.Child("key"), ""))
+		//allErrs = append(allErrs, field.Required(fldPath.Child("key"), ""))
+		allErrs = append(allErrs, field.Required(fldPath.Child("key"), "Info: Added by PSMJB Checking if we reached."))
 	} else {
 		for _, msg := range validation.IsConfigMapKey(s.Key) {
 			allErrs = append(allErrs, field.Invalid(fldPath.Child("key"), s.Key, msg))
